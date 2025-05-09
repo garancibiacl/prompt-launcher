@@ -1,0 +1,97 @@
+
+    body {
+      background-color: #0f172a;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+
+
+
+
+.prompt-item {
+  background-color: #1e293b;
+  border-left: 4px solid #0dcaf0;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  position: relative;
+  margin-bottom: 10px;
+}
+.btn-copy {
+  border: 1px solid #0ea5e9;
+  color: #0ea5e9;
+  background: transparent;
+  border-radius: 6px;
+  padding: 0.25rem 0.75rem;
+  display: flex;
+  align-items: center;
+}
+.btn-copy:hover {
+  background-color: #0ea5e9;
+  color: #fff;
+}
+
+
+.accordion-button {
+  background-color: #0d1b2a;
+  color: #f8f9fa;
+  border: none;
+}
+.accordion-button:not(.collapsed) {
+  background-color: #1b263b;
+  color: #fff;
+}
+.accordion-body {
+  background-color: #1e1e2f;
+}
+.accordion-item {
+  border-radius: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+
+.accordion-button::after {
+  margin-left: 0.5rem;
+}
+.accordion-button:not(.collapsed)::after {
+  transform: rotate(-180deg);
+}
+
+
+.btn-outline-light i {
+  width: 18px;
+  height: 18px;
+  stroke-width: 1.5;
+}
+
+.btn-icon {
+  background-color: transparent;
+  border: 1px solid #444;
+  border-radius: 0.5rem;
+  padding: 0.4rem;
+  transition: all 0.2s ease;
+  color: #bbb;
+}
+.btn-icon:hover {
+  border-color: #6ea8fe;
+  color: #fff;
+  background-color: #1a1a1a;
+}
+.btn-icon i {
+  width: 20px;
+  height: 20px;
+}
+
+/* Aplica a todos los íconos Lucide generados */
+i[data-lucide] svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.5;
+}
+
+
+.icon-xs svg { width: 14px; height: 14px; }
+.icon-sm svg { width: 18px; height: 18px; }
+.icon-md svg { width: 24px; height: 24px; }
+.icon-lg svg { width: 32px; height: 32px; }
+

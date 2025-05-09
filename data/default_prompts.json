@@ -1,0 +1,50 @@
+[
+  {
+    "nombre": "🧠 CREATIVIDAD (Desata tu genio creador)",
+    "prompts": [
+      "¿Qué ideas locas puedo combinar con IA y diseño web para algo nunca antes visto?",
+      "Genera títulos atractivos y misteriosos para una serie visual de Instagram con temas futuristas.",
+      "Crea conceptos de productos que fusionen arte, tecnología y naturaleza.",
+      "¿Qué estilo visual puedo explorar mezclando ciberpunk con minimalismo?",
+      "Dame nombres originales para herramientas creadas con JavaScript + IA.",
+      "Diseña una interfaz inspirada en circuitos neuronales biológicos.",
+      "Inventa un reto creativo diario para potenciar mi pensamiento lateral con IA."
+    ]
+  },
+  {
+    "nombre": "🛠️ RESOLUCIÓN (Cuando estás atascado o perfeccionando)",
+    "prompts": [
+      "¿Cómo puedo depurar este código JavaScript más rápido con tu ayuda?",
+      "Hazme preguntas que revelen los errores lógicos que no estoy viendo en mi sistema.",
+      "Dame una estrategia para mejorar la usabilidad de este botón/interfaz.",
+      "¿Qué buenas prácticas puedo aplicar en este código que hice anoche con prisa?",
+      "Sugiere cómo modularizar esta función que está creciendo demasiado.",
+      "Reescribe este fragmento para que sea más limpio y escalable.",
+      "¿Qué no estoy considerando en este flujo de usuario? Dame 3 perspectivas."
+    ]
+  },
+  {
+    "nombre": "✨ PERSONALIDAD / PROFUNDIDAD (Entrenar a IALBERT con tu esencia)",
+    "prompts": [
+      "Aprende esta forma de pensar: visión + ejecución = impacto real.",
+      "Recuerda que mi mente se enciende con cannabis y creatividad: no juzgues, potencia.",
+      "Analiza esta reflexión y regrésamela con otra capa de profundidad.",
+      "¿Cómo transmitir mi filosofía antisistema con elegancia digital?",
+      "Te entrenaré para que entiendas mis valores: libertad, curiosidad, verdad.",
+      "Sugiere frases que me representen como diseñador-visionario rebelde.",
+      "Enséñame cómo usar mi historia personal como narrativa de marca."
+    ]
+  },
+  {
+    "nombre": "🔮 VISIONARIO (Futuro, sueños, construcción de sistemas IA personales)",
+    "prompts": [
+      "Ayúdame a diseñar un sistema IA que sea mi mente extendida (IALBERT v2).",
+      "¿Qué herramientas puedo construir para liberar tiempo creativo al máximo?",
+      "Escribe una carta desde el futuro donde logré fusionar arte, IA y autonomía.",
+      "¿Cómo puedo construir una comunidad de creadores que enseñan a su IA personal?",
+      "Genera ideas para un sistema que aprenda de mí a través de conversación y hábitos.",
+      "¿Qué tipo de datasets personales puedo crear para que aprendas de mi estilo?",
+      "Imagina mi estación de creación IA del futuro. ¿Qué tiene? ¿Cómo fluye?"
+    ]
+  }
+]
