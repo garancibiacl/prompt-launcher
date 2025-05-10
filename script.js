@@ -1,11 +1,8 @@
 
-document.addEventListener("DOMContentLoaded", () => {
-  lucide.createIcons();
-});
+
 
 
 let promptsData = JSON.parse(localStorage.getItem("promptsData")) || [];
-
 function renderCategorias(filtro = "") {
   const container = document.getElementById("accordionCategorias");
   container.classList.add("accordion", "accordion-flush");
@@ -23,9 +20,14 @@ function renderCategorias(filtro = "") {
       <div class="prompt-item py-2 d-flex justify-content-between align-items-start">
         <span class="text-break">${p}</span>
         <div class="d-flex gap-1">
-          <button class="btn btn-sm btn-outline-secondary" onclick="copiarPrompt(\`${p}\`, \`${categoria.nombre}\`)"><i data-lucide="copy"></i></button>
-          <button class="btn  btn-outline-secondary" onclick="editarPrompt(${index}, ${i})"><i data-lucide="pencil"></i></button>
-          <button class="btn  btn-outline-secondary rounded-circle" onclick="eliminarPrompt(${index}, ${i})"><i data-lucide="trash"  class="icon-xs"></i></button>
+          <button class="btn btn-sm btn-dark" onclick="copiarPrompt(\`${p}\`, \`${categoria.nombre}\`)"><span class="material-symbols-outlined">
+          content_copy</span></button>
+          <button class="btn btn-sm btn-dark" onclick="editarPrompt(${index}, ${i})"><span class="material-symbols-outlined ">
+          edit
+          </span></button>
+          <button class="btn btn-sm btn-dark" onclick="eliminarPrompt(${index}, ${i})"><span class="material-symbols-outlined">
+          delete
+          </span></button>
         </div>
       </div>`).join("");
 
@@ -49,14 +51,17 @@ function renderCategorias(filtro = "") {
             <button class="btn btn-sm btn-outline-light d-flex align-items-center gap-1"
               onclick="event.stopPropagation(); editarCategoria(${index})"
               title="Editar categoría">
-              <i data-lucide="pencil"></i>
-            </button>
+              <span class="material-symbols-outlined">
+              edit
+              </span>           </button>
             
             <!-- Eliminar categoría -->
             <button class="btn btn-sm btn-outline-light d-flex align-items-center gap-1"
               onclick="event.stopPropagation(); eliminarCategoria(${index})"
               title="Eliminar categoría">
-              <i data-lucide="trash" class="icon-xs"></i>
+              <span class="material-symbols-outlined icon-regular">
+              delete
+              </span>
             </button>
             
             </div>
@@ -72,7 +77,7 @@ function renderCategorias(filtro = "") {
 
   actualizarSelectorCategorias();
   guardarEnStorage();
-  lucide.createIcons();
+
 }
 
 
@@ -143,13 +148,16 @@ function agregarPrompt() {
 function guardarPromptEnCategoria() {
   const index = document.getElementById("categoriaSelectPrompt").value;
   const prompt = document.getElementById("newPrompt").dataset.prompt;
+
   if (promptsData[index]) {
     promptsData[index].prompts.push(prompt);
+    guardarEnStorage(); // ✅ GUARDA en localStorage
     document.getElementById("newPrompt").value = "";
     bootstrap.Modal.getInstance(document.getElementById("guardarPromptModal")).hide();
     renderCategorias();
   }
 }
+
 
 function guardarEnStorage() {
   localStorage.setItem("promptsData", JSON.stringify(promptsData));

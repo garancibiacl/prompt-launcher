@@ -82,16 +82,26 @@
   height: 20px;
 }
 
-/* Aplica a todos los íconos Lucide generados */
-i[data-lucide] svg {
-  width: 20px;
-  height: 20px;
-  stroke-width: 1.5;
+
+
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 100,     /* peso normal */
+    'GRAD' 0,
+    'opsz' 24;
+  font-size: 20px;
 }
 
+/* Pesos personalizados */
+.icon-regular {
+  font-variation-settings: 'FILL' 0, 'wght' 100, 'GRAD' 0, 'opsz' 15;
+}
+.icon-bold {
+  font-variation-settings: 'FILL' 0, 'wght' 700, 'GRAD' 0, 'opsz' 24;
+}
+.icon-fill {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
 
-.icon-xs svg { width: 14px; height: 14px; }
-.icon-sm svg { width: 18px; height: 18px; }
-.icon-md svg { width: 24px; height: 24px; }
-.icon-lg svg { width: 32px; height: 32px; }
 
