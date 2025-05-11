@@ -11,6 +11,8 @@
 
       <!-- Tu CSS y Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  
   <link rel="stylesheet" href="/style.css">
 
 
@@ -30,16 +32,23 @@
     
       <!-- Botón -->
       <div class="col-md-2 text-md-end">
-        <button class="btn btn-success w-100 w-md-auto" data-bs-toggle="modal" data-bs-target="#nuevaCategoriaModal">
+        <button class="btn btn-primary w-100 w-md-auto" data-bs-toggle="modal" data-bs-target="#nuevaCategoriaModal">
           + Nueva Categoría
         </button>
       </div>
     </div>
     
 
-    <div class="mb-4 mt-5">
+    <div class="row mb-4 mt-5">
+      <div class="col-12 ">
+      <h5 class="pb-2">➕ Agregar nuevo prompt</h5>
       <textarea id="newPrompt" class="form-control mb-2" placeholder="Escribe tu nuevo prompt..."></textarea>
-      <button class="btn btn-primary" onclick="agregarPrompt()">Agregar Prompt</button>
+      <div class="col-12 d-flex justify-content-end">
+      <button class="btn btn-outline-info d-flex align-items-center gap-2" onclick="agregarPrompt()">Agregar Prompt   <span class="material-symbols-outlined ">
+        arrow_forward
+        </span></button>
+      </div>
+        </div>
     </div>
 
     
@@ -54,7 +63,8 @@
       <button id="exportarPrompts" class="btn btn-outline-light w-100">💾 Exportar prompts como JSON</button>
     </div>
 
-    <div class="accordion" id="accordionCategorias"></div>
+<!-- Contenedor donde se renderiza el acordeón -->
+<div id="accordionCategorias" class="accordion accordion-flush mt-4"></div>
   </div>
 
   <!-- Modal: Crear nueva categoría -->
@@ -95,8 +105,7 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="script.js"></script>
+
 
 <!-- Modal: Editar Prompt -->
 <div class="modal fade" id="editarPromptModal" tabindex="-1" aria-labelledby="editarPromptModalLabel" aria-hidden="true">
@@ -139,8 +148,12 @@
   </div>
 </div>
 
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="script.js"></script>
 
 </body>
+
+
+
 </html>
 

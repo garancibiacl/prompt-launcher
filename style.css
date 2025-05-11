@@ -10,7 +10,8 @@
 
 
 .prompt-item {
-  background-color: #1e293b;
+  background-color: #1f2a38;
+  border: 1px solid #334155;
   border-left: 4px solid #0dcaf0;
   padding: 1rem;
   border-radius: 0.5rem;
@@ -105,3 +106,14 @@
 }
 
 
+.tooltip-dark.bs-tooltip-top .tooltip-inner {
+  background-color: #1e1e2f;
+  color: #fff;
+  font-size: 0.8rem;
+  border-radius: 0.4rem;
+  padding: 6px 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
+.tooltip-dark .tooltip-arrow::before {
+  border-top-color: #1e1e2f;
+}

@@ -1,75 +1,134 @@
 
+const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+tooltipTriggerList.forEach(el => new bootstrap.Tooltip(el));
 
 
 
 let promptsData = JSON.parse(localStorage.getItem("promptsData")) || [];
-function renderCategorias(filtro = "") {
+
+
+function renderCategorias() {
+  
   const container = document.getElementById("accordionCategorias");
-  container.classList.add("accordion", "accordion-flush");
   container.innerHTML = "";
 
-  const textoBuscar = filtro.toLowerCase().trim();
+
+
 
   promptsData.forEach((categoria, index) => {
-    // Filtra prompts de esta categoría
-    const promptsFiltrados = categoria.prompts.filter(p => p.toLowerCase().includes(textoBuscar));
-    if (promptsFiltrados.length === 0) return; // si no hay coincidencias, no mostrar categoría
-
     const id = `categoria-${index}`;
-    const promptsHTML = promptsFiltrados.map((p, i) => `
-      <div class="prompt-item py-2 d-flex justify-content-between align-items-start">
-        <span class="text-break">${p}</span>
-        <div class="d-flex gap-1">
-          <button class="btn btn-sm btn-dark" onclick="copiarPrompt(\`${p}\`, \`${categoria.nombre}\`)"><span class="material-symbols-outlined">
-          content_copy</span></button>
-          <button class="btn btn-sm btn-dark" onclick="editarPrompt(${index}, ${i})"><span class="material-symbols-outlined ">
+    const promptsHTML = categoria.prompts.map((p, i) => `
+    <div class="prompt-item py-2 d-flex justify-content-between align-items-start">
+    <span class="text-break">${p}</span>
+    <div class="d-flex gap-1">
+      <button class="btn btn-sm btn-dark d-flex align-items-center"
+        onclick="copiarPrompt(\`${p}\`, \`${categoria.nombre}\`)"
+        data-bs-toggle="tooltip"
+        data-bs-placement="top"
+        data-bs-custom-class="tooltip-dark"
+        data-bs-title="Copiar prompt">
+
+        
+        <span class="material-symbols-outlined">content_copy</span>
+      </button>
+  
+      <button class="btn btn-sm btn-dark d-flex align-items-center"
+        onclick="editarPrompt(${index}, ${i})"
+        data-bs-toggle="tooltip" data-bs-placement="top" title="Editar prompt">
+        <span class="material-symbols-outlined">edit</span>
+      </button>
+  
+      <button class="btn btn-sm btn-dark d-flex align-items-center"
+        onclick="eliminarPrompt(${index}, ${i})"
+        data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar prompt">
+        <span class="material-symbols-outlined">delete</span>
+      </button>
+    </div>
+  </div>
+  `).join("");
+
+    container.innerHTML += `
+    <div class="accordion-item border border-secondary-subtle rounded-3 overflow-hidden shadow-sm">
+    <h2 class="accordion-header" id="heading-${id}">
+      <div class="d-flex justify-content-between align-items-center bg-primary text-white px-3 py-2 rounded-top-3">
+        <button class="accordion-button collapsed bg-transparent border-0 text-white p-0 fw-semibold shadow-none flex-grow-1 text-start"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapse-${id}"
+          aria-expanded="false"
+          aria-controls="collapse-${id}">
+          <span class="d-flex align-items-center gap-2">
+            <span>${categoria.nombre}</span>
+          </span>
+        </button>
+        <div class="d-flex gap-2 ms-3">
+        <!-- Editar categoría -->
+        <button class="btn btn-sm btn-outline-light d-flex align-items-center gap-1"
+          onclick="event.stopPropagation(); editarCategoria(${index})"
+          data-bs-toggle="tooltip"
+        data-bs-placement="top"
+        data-bs-custom-class="tooltip-dark"
+        data-bs-title="Editar Categoria">
+          <span class="material-symbols-outlined">
           edit
-          </span></button>
-          <button class="btn btn-sm btn-dark" onclick="eliminarPrompt(${index}, ${i})"><span class="material-symbols-outlined">
+          </span>           </button>
+        
+        <!-- Eliminar categoría -->
+        <button class="btn btn-sm btn-outline-light d-flex align-items-center gap-1"
+          onclick="event.stopPropagation(); eliminarCategoria(${index})"
+          data-bs-toggle="tooltip"
+          data-bs-placement="top"
+          data-bs-custom-class="tooltip-dark"
+          data-bs-title="Editar Categoria">
+          <span class="material-symbols-outlined icon-regular">
           delete
-          </span></button>
+          </span>
+        </button>
+        
         </div>
+      </div>
+    </h2>
+    <div id="collapse-${id}" class="accordion-collapse collapse" aria-labelledby="heading-${id}" data-bs-parent="#accordionCategorias">
+      <div class="accordion-body bg-dark text-white rounded-bottom-3">
+        ${promptsHTML || '<em class="text-secondary">No hay prompts aún.</em>'}
+      </div>
+    </div>
+  </div>`;
+  });
+
+  actualizarSelectorCategorias();
+  guardarEnStorage();
+
+  const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+tooltipTriggerList.forEach(el => new bootstrap.Tooltip(el));
+
+}
+
+
+ {
+  const container = document.getElementById("accordionCategorias");
+  container.innerHTML = "";
+
+  promptsData.forEach((categoria, index) => {
+    const id = `categoria-${index}`;
+    const promptsHTML = categoria.prompts.map((p, i) => `
+      <div class="prompt-item">
+        <span>${p}</span>
+        <button class="btn-copy" onclick="copiarPrompt(\`${p}\`, \`${categoria.nombre}\`)">📋 Copiar</button>
       </div>`).join("");
 
-      
     container.innerHTML += `
-      <div class="accordion-item border border-secondary-subtle rounded-3 overflow-hidden shadow-sm">
+      <div class="accordion-item bg-secondary border-0">
         <h2 class="accordion-header" id="heading-${id}">
-          <div class="d-flex justify-content-between align-items-center bg-primary text-white px-3 py-2 rounded-top-3">
-            <button class="accordion-button collapsed bg-transparent border-0 text-white p-0 fw-semibold shadow-none flex-grow-1 text-start"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapse-${id}"
-              aria-expanded="false"
-              aria-controls="collapse-${id}">
-              <span class="d-flex align-items-center gap-2">
-                <span>${categoria.nombre}</span>
-              </span>
-            </button>
-            <div class="d-flex gap-2 ms-3">
-            <!-- Editar categoría -->
-            <button class="btn btn-sm btn-outline-light d-flex align-items-center gap-1"
-              onclick="event.stopPropagation(); editarCategoria(${index})"
-              title="Editar categoría">
-              <span class="material-symbols-outlined">
-              edit
-              </span>           </button>
-            
-            <!-- Eliminar categoría -->
-            <button class="btn btn-sm btn-outline-light d-flex align-items-center gap-1"
-              onclick="event.stopPropagation(); eliminarCategoria(${index})"
-              title="Eliminar categoría">
-              <span class="material-symbols-outlined icon-regular">
-              delete
-              </span>
-            </button>
-            
-            </div>
-          </div>
+          <button class="accordion-button collapsed bg-secondary text-white" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapse-${id}" aria-expanded="false" aria-controls="collapse-${id}">
+            ${categoria.nombre}
+          </button>
         </h2>
-        <div id="collapse-${id}" class="accordion-collapse collapse" aria-labelledby="heading-${id}" data-bs-parent="#accordionCategorias">
-          <div class="accordion-body bg-dark text-white rounded-bottom-3">
-            ${promptsHTML || '<em class="text-secondary">No hay prompts aún.</em>'}
+        <div id="collapse-${id}" class="accordion-collapse collapse" aria-labelledby="heading-${id}"
+          data-bs-parent="#accordionCategorias">
+          <div class="accordion-body bg-dark text-white">
+            ${promptsHTML || '<em>No hay prompts aún.</em>'}
           </div>
         </div>
       </div>`;
@@ -78,6 +137,7 @@ function renderCategorias(filtro = "") {
   actualizarSelectorCategorias();
   guardarEnStorage();
 
+ 
 }
 
 
@@ -116,16 +176,19 @@ function mostrarToast(mensaje) {
     toastEl.remove();
   }, 3000);
 }
-
 function crearCategoria() {
   const nombre = document.getElementById("nuevaCategoriaNombre").value.trim();
   if (!nombre) return alert("⚠️ Escribe un nombre");
 
   promptsData.push({ nombre, prompts: [] });
+  guardarEnStorage(); // ✅ esto FALTABA
+
   document.getElementById("nuevaCategoriaNombre").value = "";
   bootstrap.Modal.getInstance(document.getElementById("nuevaCategoriaModal")).hide();
   renderCategorias();
+  mostrarToast(`✅ Categoría <strong>${nombre}</strong> creada exitosamente`);
 }
+
 
 function actualizarSelectorCategorias() {
   const selector = document.getElementById("categoriaSelectPrompt");
@@ -151,12 +214,19 @@ function guardarPromptEnCategoria() {
 
   if (promptsData[index]) {
     promptsData[index].prompts.push(prompt);
-    guardarEnStorage(); // ✅ GUARDA en localStorage
+    guardarEnStorage();
+
+    const nombreCategoria = promptsData[index].nombre;
+
     document.getElementById("newPrompt").value = "";
     bootstrap.Modal.getInstance(document.getElementById("guardarPromptModal")).hide();
     renderCategorias();
+
+    // ✅ Mostrar toast personalizado
+    mostrarToast(`✅ Prompt guardado en <strong>${nombreCategoria}</strong>`);
   }
 }
+
 
 
 function guardarEnStorage() {
@@ -280,6 +350,8 @@ async function cargarPromptsDefault() {
 document.addEventListener("DOMContentLoaded", async () => {
   await cargarPromptsDefault();
   renderCategorias();
+
+
 });
 
 
