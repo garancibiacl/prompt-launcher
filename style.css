@@ -117,3 +117,17 @@
 .tooltip-dark .tooltip-arrow::before {
   border-top-color: #1e1e2f;
 }
+#searchResults {
+  background: #1e1e2f;
+  color: #fff;
+  border-radius: 0 0 0.5rem 0.5rem;
+  border: 1px solid #444;
+  display: none;
+}
+#searchResults li {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+#searchResults li:hover {
+  background: #2a2a40;
+}

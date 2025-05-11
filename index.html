@@ -22,12 +22,16 @@
     <div class="row align-items-center mb-4 g-2">
       <!-- Título -->
       <div class="col-md-2">
-        <h5 class="mb-0">🤖 IALBERTraining</h5>
+        <h5 class="mb-0">🤖 <strong>IALBERT</strong>raining</h5>
       </div>
     
       <!-- Buscador -->
       <div class="col-md-8">
-        <input type="text" id="searchInput" class="form-control" placeholder="🔍 Buscar prompt por texto...">
+        <div class="position-relative">
+          <input type="text" id="searchInput" class="form-control" placeholder="🔍 Buscar prompt...">
+          <ul id="searchResults" class="list-group position-absolute w-100 z-3" style="top: 100%; max-height: 200px; overflow-y: auto;"></ul>
+        </div>
+        
       </div>
     
       <!-- Botón -->

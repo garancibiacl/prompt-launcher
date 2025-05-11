@@ -236,9 +236,47 @@ function guardarEnStorage() {
 // DOMContentLoaded reemplazado por async wrapper, renderCategorias);
 
 
-document.getElementById("searchInput")?.addEventListener("input", function () {
-  renderCategorias(this.value);
+const inputBusqueda = document.getElementById("searchInput");
+const listaResultados = document.getElementById("searchResults");
+
+inputBusqueda?.addEventListener("input", () => {
+  const query = inputBusqueda.value.toLowerCase().trim();
+  listaResultados.innerHTML = "";
+
+  if (!query) {
+    listaResultados.style.display = "none";
+    return;
+  }
+
+  const resultados = [];
+
+  promptsData.forEach((cat) => {
+    cat.prompts.forEach((p) => {
+      if (p.toLowerCase().includes(query)) {
+        resultados.push({ texto: p, categoria: cat.nombre });
+      }
+    });
+  });
+
+  if (resultados.length === 0) {
+    listaResultados.innerHTML = `<li class="list-group-item bg-dark text-light">🔍 No se encontraron resultados</li>`;
+  } else {
+    resultados.forEach(res => {
+      const li = document.createElement("li");
+      li.className = "list-group-item bg-dark text-light";
+      li.innerHTML = `<strong>${res.texto}</strong><br><small class="text-secondary">${res.categoria}</small>`;
+      li.addEventListener("click", () => {
+        inputBusqueda.value = res.texto;
+        listaResultados.style.display = "none";
+      });
+      listaResultados.appendChild(li);
+    });
+  }
+
+  listaResultados.style.display = "block";
 });
+
+
 
 
 
