@@ -273,26 +273,50 @@ function editarCategoria(index) {
   document.getElementById("editarCategoriaInput").value = promptsData[index].nombre;
   document.getElementById("editarCategoriaIdx").value = index;
   new bootstrap.Modal(document.getElementById("editarCategoriaModal")).show();
+
 }
 
 function guardarEdicionCategoria() {
   const idx = document.getElementById("editarCategoriaIdx").value;
   const nuevoNombre = document.getElementById("editarCategoriaInput").value.trim();
+
   if (nuevoNombre) {
     promptsData[idx].nombre = nuevoNombre;
     guardarEnStorage();
     renderCategorias();
     bootstrap.Modal.getInstance(document.getElementById("editarCategoriaModal")).hide();
+
+    // ✅ Mostrar toast
+    mostrarToast(`✅ Categoría actualizada a <strong>${nuevoNombre}</strong>`);
   }
 }
 
+
 function eliminarCategoria(index) {
-  if (confirm("¿Eliminar esta categoría con todos sus prompts?")) {
-    promptsData.splice(index, 1);
-    guardarEnStorage();
-    renderCategorias();
-  }
+  const nombre = promptsData[index].nombre;
+
+  Swal.fire({
+    title: `¿Eliminar "${nombre}"?`,
+    text: "Se eliminarán todos los prompts de esta categoría.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#6c757d",
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar",
+    backdrop: true
+  }).then((result) => {
+    if (result.isConfirmed) {
+      promptsData.splice(index, 1);
+      guardarEnStorage();
+      renderCategorias();
+
+      mostrarToast(`🗑️ Categoría <strong>${nombre}</strong> eliminada exitosamente`);
+    }
+  });
 }
+
+
 
 function importarPromptsDesdeArchivo(event) {
   const archivo = event.target.files[0];
