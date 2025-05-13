@@ -9,15 +9,23 @@
 
 
 
-.prompt-item {
-  background-color: #1f2a38;
-  border: 1px solid #334155;
-  border-left: 4px solid #0dcaf0;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  position: relative;
-  margin-bottom: 10px;
+    .prompt-item {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 1rem;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--bs-secondary);
+      align-items: center;
+    }
+    
+
+
+
+.prompt-item:hover {
+  background-color: #2a2a40;
+  box-shadow: 0 0 0.5rem rgba(255, 255, 255, 0.05);
 }
+
 .btn-copy {
   border: 1px solid #0ea5e9;
   color: #0ea5e9;
@@ -131,3 +139,24 @@
 #searchResults li:hover {
   background: #2a2a40;
 }
+
+.prompt-hover .action-buttons {
+  opacity: 0;
+  transform: translateX(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.prompt-hover:hover .action-buttons {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+
+.favorito-toggle {
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.favorito-toggle:hover {
+  color: gold;
+}
+
