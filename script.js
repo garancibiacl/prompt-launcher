@@ -226,19 +226,22 @@ function guardarPromptEnCategoria() {
   const prompt = document.getElementById("newPrompt").dataset.prompt;
 
   if (promptsData[index]) {
-    promptsData[index].prompts.push(prompt);
-    guardarEnStorage();
+    promptsData[index].prompts.push({
+      texto: prompt,
+      favorito: false
+    });
 
+    guardarEnStorage();
     const nombreCategoria = promptsData[index].nombre;
 
     document.getElementById("newPrompt").value = "";
     bootstrap.Modal.getInstance(document.getElementById("guardarPromptModal")).hide();
     renderCategorias();
 
-    // ✅ Mostrar toast personalizado
     mostrarToast(`✅ Prompt guardado en <strong>${nombreCategoria}</strong>`);
   }
 }
+
 
 
 
