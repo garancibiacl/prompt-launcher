@@ -3,152 +3,183 @@
 let promptsData = JSON.parse(localStorage.getItem("promptsData")) || [];
 
 
-function handleFavoritoClick(event, catIdx, promptIdx) {
-  event.preventDefault();
+function handleFavoritoClick(event, indexCategoria, indexPrompt, soloFavoritos = false) {
   event.stopPropagation();
-  promptsData[catIdx].prompts[promptIdx].favorito = !promptsData[catIdx].prompts[promptIdx].favorito;
+  const prompt = promptsData[indexCategoria].prompts[indexPrompt];
+  prompt.favorito = !prompt.favorito;
   guardarEnStorage();
-  renderCategorias();
+  renderPromptsDeCategoria(indexCategoria, { soloFavoritos });
 }
 
-function renderCategorias(filtro = "", soloFavoritos = false) {
 
-  
-  
-  const container = document.getElementById("accordionCategorias");
+
+
+function renderCategorias(filtro = "", soloFavoritos = false) {
+  const container = document.getElementById("promptLista");
   container.innerHTML = "";
 
-
-
-
   promptsData.forEach((categoria, index) => {
+    const promptsFiltrados = categoria.prompts.filter(p => {
+      const coincideFiltro = filtro === "" || p.texto.toLowerCase().includes(filtro.toLowerCase());
+      const coincideFavorito = !soloFavoritos || p.favorito;
+      return coincideFiltro && coincideFavorito;
+    });
 
-    
-    
-    const id = `categoria-${index}`;
-
-    
-    const promptsHTML = categoria.prompts.map((p, i) => {
+    const promptsHTML = promptsFiltrados.map((p, i) => {
       const icono = "star";
       const fill = p.favorito ? 1 : 0;
       const color = p.favorito ? "text-warning" : "text-secondary";
-    
+
       return `
-        <div class="prompt-item prompt-hover py-2 d-flex justify-content-between align-items-center">
+        <div class="prompt-item prompt-hover py-2 px-3 rounded d-flex justify-content-between align-items-center  text-light">
           <div class="d-flex align-items-center gap-3 w-100">
-    
-            <!-- ⭐ Botón favorito a la izquierda -->
-            <button class="btn btn-sm btn-dark d-flex align-items-center"
-            onclick="handleFavoritoClick(event, ${index}, ${i})"
-              data-bs-toggle="tooltip"
-              data-bs-placement="bottom"
-              data-bs-custom-class="tooltip-dark"
-              data-bs-title="Destacar prompt">
+            <button class="btn btn-sm btn-dark"
+              onclick="handleFavoritoClick(event, ${index}, ${i})"
+              title="Marcar como favorito">
               <span class="material-symbols-outlined ${color}"
-                    style="font-variation-settings: 'FILL' ${fill}, 'wght' 700;">${icono}</span>
+                style="font-variation-settings: 'FILL' ${fill}, 'wght' 700;">
+                ${icono}
+              </span>
             </button>
-    
-            <!-- Texto del prompt -->
             <span class="flex-grow-1 text-break">${p.texto}</span>
-    
-            <!-- Botones de acción -->
-            <div class="d-flex gap-1 action-buttons">
-              <button class="btn btn-sm btn-dark d-flex align-items-center"
-                onclick="copiarPrompt(\`${p.texto}\`, \`${categoria.nombre}\`)"
-                data-bs-toggle="tooltip"
-                data-bs-placement="bottom"
-                data-bs-custom-class="tooltip-dark"
-                data-bs-title="Copiar prompt">
-                <span class="material-symbols-outlined">content_copy</span>
-              </button>
-              <button class="btn btn-sm btn-dark d-flex align-items-center"
-                onclick="editarPrompt(${index}, ${i})"
-                data-bs-toggle="tooltip"
-                data-bs-placement="bottom"
-                title="Editar prompt">
-                <span class="material-symbols-outlined">edit</span>
-              </button>
-              <button class="btn btn-sm btn-dark d-flex align-items-center"
-                onclick="eliminarPrompt(${index}, ${i})"
-                data-bs-toggle="tooltip"
-                data-bs-placement="bottom"
-                title="Eliminar prompt">
-                <span class="material-symbols-outlined">delete</span>
-              </button>
-            </div>
           </div>
-        </div>
-      `;
+          <div class="d-flex gap-1 action-buttons">
+            <button class="btn btn-sm btn-dark"
+              onclick="copiarPrompt(\`${p.texto}\`, \`${categoria.nombre}\`)"
+              data-bs-toggle="tooltip" title="Copiar prompt">
+              <span class="material-symbols-outlined">content_copy</span>
+            </button>
+            <button class="btn btn-sm btn-dark"
+              onclick="editarPrompt(${index}, ${i})"
+              data-bs-toggle="tooltip" title="Editar prompt">
+              <span class="material-symbols-outlined">edit</span>
+            </button>
+            <button class="btn btn-sm btn-dark"
+              onclick="eliminarPrompt(${index}, ${i})"
+              data-bs-toggle="tooltip" title="Eliminar prompt">
+              <span class="material-symbols-outlined">delete</span>
+            </button>
+          </div>
+        </div>`;
     }).join("");
-    
-    
-    
-    
-    
-  
 
-    container.innerHTML += `
-    <div class="accordion-item border border-secondary-subtle rounded-3 overflow-hidden shadow-sm">
 
-    
-    <h2 class="accordion-header" id="heading-${id}">
-      <div class="d-flex justify-content-between align-items-center bg-primary text-white px-3 py-2 rounded-top-3">
-        <button class="accordion-button collapsed bg-transparent border-0 text-white p-0 fw-semibold shadow-none flex-grow-1 text-start"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#collapse-${id}"
-          aria-expanded="false"
-          aria-controls="collapse-${id}">
-          <span class="d-flex align-items-center gap-2">
-            <span>${categoria.nombre}</span>
-          </span>
-        </button>
-
-        
-        <div class="d-flex gap-2 ms-3">
-        <!-- Editar categoría -->
-        <button class="btn btn-sm btn-outline-light d-flex align-items-center gap-1"
-          onclick="event.stopPropagation(); editarCategoria(${index})"
-          data-bs-toggle="tooltip"
-        data-bs-placement="top"
-        data-bs-custom-class="tooltip-dark"
-        data-bs-title="Editar Categoria">
-          <span class="material-symbols-outlined">
-          edit
-          </span>           </button>
-        
-        <!-- Eliminar categoría -->
-        <button class="btn btn-sm btn-outline-light d-flex align-items-center gap-1"
-          onclick="event.stopPropagation(); eliminarCategoria(${index})"
-          data-bs-toggle="tooltip"
-          data-bs-placement="bottom"
-          data-bs-custom-class="tooltip-dark"
-          data-bs-title="Editar Categoria">
-          <span class="material-symbols-outlined icon-regular">
-          delete
-          </span>
-        </button>
-
-        
-        
-        </div>
-      </div>
-    </h2>
-    <div id="collapse-${id}" class="accordion-collapse collapse" aria-labelledby="heading-${id}" data-bs-parent="#accordionCategorias">
-    <div class="accordion-body bg-dark text-white rounded-bottom-3 py-3 overflow-auto" style="max-height: 400px;">
-        ${promptsHTML || '<em class="text-secondary">No hay prompts aún.</em>'}
-      </div>
-    </div>
-  </div>`;
   });
 
   actualizarSelectorCategorias();
   guardarEnStorage();
 
   const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-tooltipTriggerList.forEach(el => new bootstrap.Tooltip(el));
+  tooltipTriggerList.forEach(el => new bootstrap.Tooltip(el));
 
+
+  setTimeout(() => {
+    const items = document.querySelectorAll("#categoriaLista li");
+    if (items.length) {
+      items[items.length - 1].classList.add("bg-success", "text-white");
+      setTimeout(() => {
+        items[items.length - 1].classList.remove("bg-success", "text-white");
+      }, 1000);
+    }
+  }, 100);
+  
 }
+
+
+function renderSidebarCategorias() {
+  const contenedor = document.getElementById("categoriaLista");
+  if (!contenedor) return;
+  contenedor.innerHTML = "";
+
+  promptsData.forEach((cat, index) => {
+    const li = document.createElement("li");
+    li.className = "list-group-item list-group-item-action bg-dark text-light border-secondary";
+    li.textContent = cat.nombre;
+    li.style.cursor = "pointer";
+
+    li.addEventListener("click", () => {
+      renderPromptsDeCategoria(index);
+    });
+
+    contenedor.appendChild(li);
+  });
+}
+function renderPromptsDeCategoria(index, opciones = {}) {
+  const { soloFavoritos = false } = opciones;
+  const categoria = promptsData[index];
+  const container = document.getElementById("promptLista");
+  container.innerHTML = "";
+
+  const promptsFiltrados = categoria.prompts.filter(p => !soloFavoritos || p.favorito);
+
+  const promptsHTML = promptsFiltrados.map((p, i) => {
+    const icono = "star";
+    const fill = p.favorito ? 1 : 0;
+    const color = p.favorito ? "text-warning" : "text-secondary";
+
+    return `
+      <div class="prompt-item prompt-hover py-2 px-3 rounded d-flex justify-content-between align-items-center text-light ">
+        <div class="d-flex align-items-center gap-3 w-100">
+          <button class="btn btn-sm btn-dark"
+            onclick="handleFavoritoClick(event, ${index}, ${i}, ${soloFavoritos})"
+            title="Marcar como favorito">
+            <span class="material-symbols-outlined ${color}"
+              style="font-variation-settings: 'FILL' ${fill}, 'wght' 700;">
+              ${icono}
+            </span>
+          </button>
+          <span class="flex-grow-1 text-break">${p.texto}</span>
+        </div>
+        <div class="d-flex gap-1 action-buttons">
+          <button class="btn btn-sm btn-dark"
+            onclick="copiarPrompt(\`${p.texto}\`, \`${categoria.nombre}\`)"
+            data-bs-toggle="tooltip" title="Copiar prompt">
+            <span class="material-symbols-outlined">content_copy</span>
+          </button>
+          <button class="btn btn-sm btn-dark"
+            onclick="editarPrompt(${index}, ${i})"
+            data-bs-toggle="tooltip" title="Editar prompt">
+            <span class="material-symbols-outlined">edit</span>
+          </button>
+          <button class="btn btn-sm btn-dark"
+            onclick="eliminarPrompt(${index}, ${i})"
+            data-bs-toggle="tooltip" title="Eliminar prompt">
+            <span class="material-symbols-outlined">delete</span>
+          </button>
+        </div>
+      </div>`;
+  }).join("");
+
+  container.innerHTML = `
+    <div class="mb-4">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h5 class="mb-0 text-light">${categoria.nombre}</h5>
+        <div class="d-flex gap-2">
+          <button class="btn btn-sm btn-outline-light"
+            onclick="editarCategoria(${index})"
+            data-bs-toggle="tooltip" title="Editar categoría">
+            <span class="material-symbols-outlined">edit</span>
+          </button>
+          <button class="btn btn-sm btn-outline-light"
+            onclick="eliminarCategoria(${index})"
+            data-bs-toggle="tooltip" title="Eliminar categoría">
+            <span class="material-symbols-outlined">delete</span>
+          </button>
+        </div>
+      </div>
+      <div class="d-flex justify-content-end mb-2">
+        <button class="btn btn-sm btn-outline-warning"
+          onclick="toggleSoloFavoritos(${index})"
+          title="Mostrar solo favoritos">
+          ⭐ Solo favoritos
+        </button>
+      </div>
+      <div class="d-flex flex-column gap-2">
+        ${promptsHTML || '<div class="text-secondary"><em>No hay prompts aún.</em></div>'}
+      </div>
+    </div>`;
+}
+
 
 
 
@@ -194,13 +225,16 @@ function crearCategoria() {
   if (!nombre) return alert("⚠️ Escribe un nombre");
 
   promptsData.push({ nombre, prompts: [] });
-  guardarEnStorage(); // ✅ esto FALTABA
+  guardarEnStorage();
 
   document.getElementById("nuevaCategoriaNombre").value = "";
   bootstrap.Modal.getInstance(document.getElementById("nuevaCategoriaModal")).hide();
+
   renderCategorias();
+  renderSidebarCategorias(); // ✅ nuevo
   mostrarToast(`✅ Categoría <strong>${nombre}</strong> creada exitosamente`);
 }
+
 
 
 function actualizarSelectorCategorias() {
@@ -433,21 +467,17 @@ async function cargarPromptsDefault() {
 document.addEventListener("DOMContentLoaded", async () => {
   await cargarPromptsDefault();
   renderCategorias();
-
+  renderCategorias();           // <- para mostrar los prompts en main
+  renderSidebarCategorias();    // <- ✅ para mostrar las categorías en el sidebar
 
 });
 
-function toggleFavorito(catIdx, promptIdx) {
-  const prompt = promptsData[catIdx].prompts[promptIdx];
-  if (typeof prompt === 'string') return; // compatibilidad
-  prompt.favorito = !prompt.favorito;
-  guardarEnStorage();
-  renderCategorias(document.getElementById("searchInput")?.value || "");
+let filtroSoloFavoritos = false;
+
+function toggleSoloFavoritos(index) {
+  filtroSoloFavoritos = !filtroSoloFavoritos;
+  renderPromptsDeCategoria(index, { soloFavoritos: filtroSoloFavoritos });
 }
-
-
-
-let soloFavoritosActivo = false;
 
 document.getElementById("toggleFavoritosBtn")?.addEventListener("click", () => {
   soloFavoritosActivo = !soloFavoritosActivo;
@@ -460,3 +490,11 @@ document.getElementById("toggleFavoritosBtn")?.addEventListener("click", () => {
   const filtro = document.getElementById("searchInput")?.value || "";
   renderCategorias(filtro, soloFavoritosActivo);
 });
+
+
+
+
+
+
+
+

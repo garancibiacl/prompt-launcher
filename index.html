@@ -17,13 +17,64 @@
 
 
 </head>
-<body class="text-white">
+<body class="bg-dark text-light">
+
+
+
+  <div class="container-fluid h-100">
+    <div class="row h-100">
+      <nav class="col-md-3 col-lg-3 bg-secondary p-3 d-flex flex-column">
+        <button class="btn btn-outline-light w-100 w-md-auto mb-4" data-bs-toggle="modal" data-bs-target="#nuevaCategoriaModal">
+          + Nueva Categoría
+        </button> 
+        <h5 class="fw-bold text-light">📁 Categorías</h5>
+        <ul id="categoriaLista" class="list-group list-group-flush flex-grow-1 overflow-auto mb-3"></ul>
+         
+      </nav>
+      <main class="col-md-9 col-lg-8 p-4">     
+        <div class="row mb-4 mt-1">
+          <div class="col-12 ">
+          <h5 class="pb-2">➕ Agregar nuevo prompt</h5>
+          <textarea id="newPrompt" class="form-control mb-2" placeholder="Escribe tu nuevo prompt..."></textarea>
+          <div class="col-12 d-flex justify-content-end mb-5">
+          <button class="btn btn-outline-info d-flex align-items-center gap-2" onclick="agregarPrompt()">Agregar Prompt   <span class="material-symbols-outlined ">
+            arrow_forward
+            </span></button>
+          </div>
+          <div id="promptLista" class="vstack gap-3 p-4 rounded-4"></div>
+            </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
   <div class="container py-4">
     <div class="row align-items-center mb-4 g-2">
       <!-- Título -->
-      <div class="col-md-2">
+      <!-- <div class="col-md-2">
         <h5 class="mb-0">🤖 <strong>IALBERT</strong>raining</h5>
-      </div>
+      </div> -->
+
+
+ 
     
       <!-- Buscador -->
       <div class="col-md-8">
@@ -34,40 +85,20 @@
         
       </div>
     
-      <!-- Botón -->
-      <div class="col-md-2 text-md-end">
-        <button class="btn btn-primary w-100 w-md-auto" data-bs-toggle="modal" data-bs-target="#nuevaCategoriaModal">
-          + Nueva Categoría
-        </button>
-      </div>
+  
     </div>
     
-
-    <div class="row mb-4 mt-5">
-      <div class="col-12 ">
-      <h5 class="pb-2">➕ Agregar nuevo prompt</h5>
-      <textarea id="newPrompt" class="form-control mb-2" placeholder="Escribe tu nuevo prompt..."></textarea>
-      <div class="col-12 d-flex justify-content-end">
-      <button class="btn btn-outline-info d-flex align-items-center gap-2" onclick="agregarPrompt()">Agregar Prompt   <span class="material-symbols-outlined ">
-        arrow_forward
-        </span></button>
-      </div>
-        </div>
-    </div>
 
     
 
     
     <div class="d-flex justify-content-between align-items-center mb-3">
-      <h5 class="mb-0">Mis Prompts</h5>
+ 
       <button id="toggleFavoritosBtn" class="btn btn-outline-warning btn-sm">
         🔖 Ver solo favoritos
       </button>
     </div>
-    
 
-      <!-- Contenedor donde se renderiza el acordeón -->
-      <div id="accordionCategorias" class="accordion accordion-flush mt-4"></div>
 
 
       <div class="row mt-4 d-flex justify-content-between">
